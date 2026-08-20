@@ -636,7 +636,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (!copied) {
-        showMessage(`Copy this activity link: ${shareData.url}`, "info");
+        showMessage(
+          "Copying links is not supported in this browser. Try Facebook or X instead.",
+          "info"
+        );
         return;
       }
       showMessage("Activity link copied to your clipboard.", "success");
