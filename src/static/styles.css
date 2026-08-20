@@ -215,6 +215,7 @@ section h3 {
 .share-button:hover,
 .share-link:hover {
   background-color: var(--primary);
+  color: var(--primary-text);
 }
 
 .share-link {

@@ -608,7 +608,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function getActivityShareUrl(name) {
     const shareUrl = new URL(window.location.href);
-    shareUrl.hash = `activity=${encodeURIComponent(name)}`;
+    shareUrl.hash = encodeURIComponent(name);
     return shareUrl.toString();
   }
 
@@ -635,8 +635,11 @@ document.addEventListener("DOMContentLoaded", () => {
         textArea.style.opacity = "0";
         document.body.appendChild(textArea);
         textArea.select();
-        document.execCommand("copy");
+        const copied = document.execCommand("copy");
         textArea.remove();
+        if (!copied) {
+          throw new Error("Clipboard copy failed");
+        }
       }
       showMessage("Activity link copied to your clipboard.", "success");
     } catch (error) {
