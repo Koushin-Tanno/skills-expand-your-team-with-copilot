@@ -553,6 +553,19 @@ document.addEventListener("DOMContentLoaded", () => {
         </ul>
       </div>
       <div class="activity-card-actions">
+        <div class="share-buttons" aria-label="Share ${name}">
+          <button class="share-button" type="button" data-share-activity="${name}">
+            🔗 Share
+          </button>
+          <a class="share-link" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+            getActivityShareUrl(name)
+          )}" target="_blank" rel="noopener noreferrer" aria-label="Share ${name} on Facebook">Facebook</a>
+          <a class="share-link" href="https://twitter.com/intent/tweet?text=${encodeURIComponent(
+            `Join ${name} at Mergington High School!`
+          )}&url=${encodeURIComponent(
+            getActivityShareUrl(name)
+          )}" target="_blank" rel="noopener noreferrer" aria-label="Share ${name} on X">X</a>
+        </div>
         ${
           currentUser
             ? `
@@ -571,6 +584,9 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
+    const shareButton = activityCard.querySelector(".share-button");
+    shareButton.addEventListener("click", () => shareActivity(name));
+
     // Add click handlers for delete buttons
     const deleteButtons = activityCard.querySelectorAll(".delete-participant");
     deleteButtons.forEach((button) => {
@@ -588,6 +604,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     activitiesList.appendChild(activityCard);
+  }
+
+  function getActivityShareUrl(name) {
+    const shareUrl = new URL(window.location.href);
+    shareUrl.hash = `activity=${encodeURIComponent(name)}`;
+    return shareUrl.toString();
+  }
+
+  async function shareActivity(name) {
+    const shareData = {
+      title: `${name} - Mergington High School`,
+      text: `Check out ${name} at Mergington High School!`,
+      url: getActivityShareUrl(name),
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        return;
+      }
+
+      await navigator.clipboard.writeText(shareData.url);
+      showMessage("Activity link copied to your clipboard.", "success");
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        showMessage("Unable to share this activity. Please try again.", "error");
+      }
+    }
   }
 
   // Event listeners for search and filter
