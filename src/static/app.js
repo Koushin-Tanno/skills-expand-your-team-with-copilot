@@ -560,7 +560,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <a class="share-link" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
             getActivityShareUrl(name)
           )}" target="_blank" rel="noopener noreferrer" aria-label="Share ${name} on Facebook">Facebook</a>
-          <a class="share-link" href="https://twitter.com/intent/tweet?text=${encodeURIComponent(
+          <a class="share-link" href="https://x.com/intent/tweet?text=${encodeURIComponent(
             `Join ${name} at Mergington High School!`
           )}&url=${encodeURIComponent(
             getActivityShareUrl(name)
@@ -607,7 +607,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function getActivityShareUrl(name) {
-    const shareUrl = new URL(window.location.href);
+    const shareUrl = new URL(window.location.pathname, window.location.origin);
     shareUrl.searchParams.set("activity", name);
     return shareUrl.toString();
   }
