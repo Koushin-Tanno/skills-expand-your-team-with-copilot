@@ -608,7 +608,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function getActivityShareUrl(name) {
     const shareUrl = new URL(window.location.href);
-    shareUrl.hash = name;
+    shareUrl.searchParams.set("activity", name);
     return shareUrl.toString();
   }
 
@@ -625,9 +625,17 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      if (navigator.clipboard) {
-        await navigator.clipboard.writeText(shareData.url);
-      } else {
+      let copied = false;
+      if (navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(shareData.url);
+          copied = true;
+        } catch (error) {
+          console.warn("Clipboard access unavailable:", error);
+        }
+      }
+
+      if (!copied) {
         showMessage(`Copy this activity link: ${shareData.url}`, "info");
         return;
       }
