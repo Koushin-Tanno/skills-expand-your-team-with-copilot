@@ -476,6 +476,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderActivityCard(name, details) {
     const activityCard = document.createElement("div");
     activityCard.className = "activity-card";
+    const safeName = escapeHtmlAttribute(name);
 
     // Calculate spots and capacity
     const totalSpots = details.max_participants;
@@ -553,16 +554,16 @@ document.addEventListener("DOMContentLoaded", () => {
         </ul>
       </div>
       <div class="activity-card-actions">
-        <div class="share-buttons" aria-label="Share ${name}">
-          <button class="share-button" type="button" data-share-activity="${name}">
+        <div class="share-buttons" aria-label="Share ${safeName}">
+          <button class="share-button" type="button" data-share-activity="${safeName}">
             🔗 Share
           </button>
           <a class="share-link" href="${escapeHtmlAttribute(
             getFacebookShareUrl(name)
-          )}" target="_blank" rel="noopener noreferrer" aria-label="Share ${name} on Facebook">Facebook</a>
+          )}" target="_blank" rel="noopener noreferrer" aria-label="Share ${safeName} on Facebook">Facebook</a>
           <a class="share-link" href="${escapeHtmlAttribute(
             getXShareUrl(name)
-          )}" target="_blank" rel="noopener noreferrer" aria-label="Share ${name} on X">X</a>
+          )}" target="_blank" rel="noopener noreferrer" aria-label="Share ${safeName} on X">X</a>
         </div>
         ${
           currentUser
