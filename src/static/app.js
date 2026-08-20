@@ -624,7 +624,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function escapeHtmlAttribute(value) {
-    return value.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+    return value
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#x27;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
   }
 
   async function shareActivity(name) {
