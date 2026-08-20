@@ -557,13 +557,11 @@ document.addEventListener("DOMContentLoaded", () => {
           <button class="share-button" type="button" data-share-activity="${name}">
             🔗 Share
           </button>
-          <a class="share-link" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-            getActivityShareUrl(name)
+          <a class="share-link" href="${escapeHtmlAttribute(
+            getFacebookShareUrl(name)
           )}" target="_blank" rel="noopener noreferrer" aria-label="Share ${name} on Facebook">Facebook</a>
-          <a class="share-link" href="https://x.com/intent/tweet?text=${encodeURIComponent(
-            `Join ${name} at Mergington High School!`
-          )}&url=${encodeURIComponent(
-            getActivityShareUrl(name)
+          <a class="share-link" href="${escapeHtmlAttribute(
+            getXShareUrl(name)
           )}" target="_blank" rel="noopener noreferrer" aria-label="Share ${name} on X">X</a>
         </div>
         ${
@@ -610,6 +608,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const shareUrl = new URL(window.location.pathname, window.location.origin);
     shareUrl.searchParams.set("activity", name);
     return shareUrl.toString();
+  }
+
+  function getFacebookShareUrl(name) {
+    return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+      getActivityShareUrl(name)
+    )}`;
+  }
+
+  function getXShareUrl(name) {
+    return `https://x.com/intent/tweet?text=${encodeURIComponent(
+      `Join ${name} at Mergington High School!`
+    )}&url=${encodeURIComponent(getActivityShareUrl(name))}`;
+  }
+
+  function escapeHtmlAttribute(value) {
+    return value.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
   }
 
   async function shareActivity(name) {
