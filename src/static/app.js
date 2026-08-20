@@ -625,7 +625,19 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      await navigator.clipboard.writeText(shareData.url);
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(shareData.url);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = shareData.url;
+        textArea.setAttribute("readonly", "");
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        textArea.remove();
+      }
       showMessage("Activity link copied to your clipboard.", "success");
     } catch (error) {
       if (error.name !== "AbortError") {
